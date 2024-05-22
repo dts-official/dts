@@ -10,7 +10,7 @@ import NumberEffect from "@/components/animation/numbers";
 import axios from "./../../../plugin/axios";
 import { useEffect, useState } from "react";
 
-function Dashboard() {
+  function Dashboard() {
 
   const [data, setData]=useState({
     TotalUsers: 0,
@@ -169,7 +169,7 @@ function Dashboard() {
             <div className=" flex flex-col text-text">
               <p className=" sm:text-[8px] text-xs font-normal">Offices</p>
               <h1 className=" sm:text-base text-xl font-bold">
-                <NumberEffect value={sampleData.Offices} />
+                <NumberEffect value={  sampleData.Offices} />
               </h1>
             </div>
           </div>

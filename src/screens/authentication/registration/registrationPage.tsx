@@ -167,7 +167,7 @@ function RegistrationPage() {
                        console.log(response.data)
                        Swal.fire({
                         icon: "success",
-                        title: "Succesfully Registered",
+                        title: "Succesfully Registered - Please Check your Email",
                         showConfirmButton: false,
                         timer: 1500
                       });

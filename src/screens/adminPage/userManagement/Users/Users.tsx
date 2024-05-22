@@ -23,7 +23,7 @@ const Users = () => {
 
   // get all users that are active and not an admin
   const getAllUsers = () =>{
-    axios.get('users', {
+    axios.get('users/all', {
       headers: {
         Authorization: `Token ${localStorage.getItem('keys')}`
       }
@@ -31,6 +31,7 @@ const Users = () => {
     ).then((response:any) => {
       const activatedUsers = response.data.filter((user:any) => user.is_active == true && user.is_staff == false );
       setdata(activatedUsers)
+     
 
     }).catch(error => {
       console.log(error)

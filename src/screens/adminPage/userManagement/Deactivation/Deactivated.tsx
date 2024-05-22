@@ -17,7 +17,7 @@ const Deactivated = () => {
 
     // get all users that are not active and not an admin
     const getAllDeactivatedUsers = ()=>{
-        axios.get('users', {
+        axios.get('users/all', {
             headers: {
               Authorization: `Token ${localStorage.getItem('keys')}`
             }

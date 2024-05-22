@@ -1,0 +1,16 @@
+[
+    { "entry": "Surname", "applicable": "Not applicable" },
+    { "entry": "First Name", "applicable": "Not applicable" },
+    { "entry": "Middle Name", "applicable": "Not applicable" },
+    { "entry": "Position", "applicable": "Not applicable" },
+    { "entry": "Office", "applicable": "Not applicable" },
+    { "entry": "City", "applicable": "Not applicable" },
+    { "entry": "Province", "applicable": "Not applicable" },
+    { "entry": "Region", "applicable": "Not applicable" },
+    { "entry": "Citizenship", "applicable": "Not applicable" },
+    { "entry": "Sex", "applicable": "Not applicable" },
+    { "entry": "Civil Status", "applicable": "Not applicable" },
+    { "entry": "Birthdate", "applicable": "Not applicable" },
+    { "entry": "Cellphone No.", "applicable": "Not applicable" }
+]
+  

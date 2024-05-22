@@ -1,0 +1,51 @@
+[
+    {
+      "username": "Joone Copper",
+      "designation": "Developer",
+      "phone number": "090567698",
+      "Email": "joone@example.com",
+      "Region": "I",
+      "Status": "Update, Deactivated"
+    },
+    {
+      "username": "Jane Doe",
+      "designation": "Provincial Officer",
+      "phone number": "090123456",
+      "Email": "jane@example.com",
+      "Region": "II",
+      "Status": "Active"
+    },
+    {
+      "username": "John Smith",
+      "designation": "Regional Director",
+      "phone number": "090987654",
+      "Email": "john@example.com",
+      "Region": "III",
+      "Status": "Active"
+    },
+    {
+        "username": "John Smith",
+        "designation": "Regional Director",
+        "phone number": "090987654",
+        "Email": "john@example.com",
+        "Region": "III",
+        "Status": "Active"
+      },
+      {
+        "username": "John Smith",
+        "designation": "Regional Director",
+        "phone number": "090987654",
+        "Email": "john@example.com",
+        "Region": "III",
+        "Status": "Active"
+      },
+      {
+        "username": "John Smith",
+        "designation": "Regional Director",
+        "phone number": "090987654",
+        "Email": "john@example.com",
+        "Region": "III",
+        "Status": "Active"
+      }
+  ]
+  

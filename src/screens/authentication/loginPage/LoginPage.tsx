@@ -1,0 +1,233 @@
+import bg from "../../../assets/images/DICT-bg.webp";
+import logo from "../../../assets/images/DICT-Banner-Logo.webp";
+import {  useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AlertBox } from "../../../components/alert/Alert";
+
+import axios from "../../../plugin/axios";
+import { Loader2Icon } from "lucide-react";
+
+function LoginPage() {
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    localStorage.getItem('user')==null?localStorage.setItem('user',
+    '{"first_name":"Angel","last_name":"Naval","position":"Officer 202","designation":"gwapo","id":26,"email":"markgilrusiana437@gmail.com"}'):""
+
+    localStorage.setItem("nav", "0")
+  },[])
+
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [alert,setAlert]= useState("")
+
+  //get office id and name to be used in the dropdown
+  const getAllOfficeNameAndID = () => {
+    axios.get('/office/all/get')
+    .then(response => {
+        const officeDataArray = response.data;
+        const dataToStore = officeDataArray.map((e:any) => ({
+            id: e.officeID,
+            name: e.name
+        }));
+        localStorage.setItem('officeData', JSON.stringify(dataToStore));
+    })
+    .catch(error => {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+          // The request was made but no response was received
+          console.error(error.request);
+      } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+      }
+      console.error(error.config);
+      });
+  }
+
+  useEffect(()=>{
+    getAllOfficeNameAndID()
+  },[])
+
+  return (
+   
+      <div className=" grid grid-cols-6 bg-background h-screen w-screen  flex-row justify-center bg-blue2 overflow-hidden ">
+        <Link to="/dts/developers" className="  z-50 absolute text-white bottom-0  p-10 bg-blue2 px-3 py-2 ">
+          <p className="  text-xs">Developed by: <span className=" font-semibold hover:underline">DTS Team</span> </p>
+        </Link>
+       
+       
+        {/* image */}
+        <div className=" flex md:hidden col-span-4 lg:col-span-3">
+          <img
+            className=" object-cover  w-full animate__animated animate__slideInDown"
+            src={bg}
+            alt="DICT_bg"
+          />
+        </div>
+
+       
+
+        {/* login form */}
+        <div className=" relative sm:justify-center px-10 lg:col-span-3  col-span-2 md:col-span-6 flex flex-col justify-center items-center h-full w-full   animate__animated animate__slideInUp bg-blue2  ">
+          
+         
+          <form className=" flex flex-col min-h-[200px]  w-full max-w-[450px] md:max-w-[550px]  mb-20 "
+            onSubmit={ async (e: any) => {
+              e.preventDefault();
+
+              setAlert("s")
+
+              try {
+
+                await axios.post("token/login/",user).then((response:any)=>{
+                  localStorage.setItem("keys",response.data.auth_token)
+
+                   axios.get("users/me/",{
+                    headers: {
+                      Authorization: `Token ${response.data.auth_token}`,
+                    }, 
+                  }).then((response:any)=>{
+                    console.log("response data: ",response.data);
+                    setAlert("success")
+                    localStorage.setItem("user",JSON.stringify(response.data))
+                    setTimeout(()=>{
+                      // Check if the user is a superuser
+                      if (response.data.acc_lvl == 0) {
+                        navigate("/dts/admin")
+                      } else {
+                        // Navigate to the page for normal users
+                        navigate("/dts/home")
+                      }
+                      setAlert("")
+                    },1000)
+                  })
+
+                }).catch(()=>{
+                  setAlert("error")
+                  setTimeout(()=>{
+                    setAlert("")
+                  },3000)
+                })
+                
+              } catch (error) {
+                setAlert("error")
+                setTimeout(()=>{
+                  setAlert("")
+                },3000)
+              }
+
+
+              // if (user.email =="iannicocaulin@gmail.com" && user.password =="nico322w") {
+              //   setAlert("success")
+              //   setTimeout(()=>{
+              //     navigate("/dts/home")
+              //     setAlert("")
+              //   },1000)
+              // }else if(user.email =="admin@gmail.com" && user.password =="admin123"){
+              //   setAlert("success")
+              //   setTimeout(()=>{
+              //     navigate("/dts/admin")
+              //     setAlert("")
+              //   },1000)
+              // }
+              // else{
+                
+              //   setAlert("error")
+              //   setTimeout(()=>{
+              //     setAlert("")
+              //   },3000)
+              // }
+            }}
+          >
+
+            <div className=" flex flex-col gap-10 mb-10">
+
+            
+              <img
+                className="  w-[60%] object-contain self-center"
+                src={logo}
+                alt="DICT_bg"
+              />
+             
+
+              <p className=" text-textW text-[25px] font-semibold ">
+                Log in to your account
+              </p>
+            </div>
+            <label className=" text-textW mb-1"> Email Address </label>
+            <input
+              className=" w-full h-[40px] text-textW bg-blue2 border-[1px] outline-0 focus:border-[2px] focus:border-textW shadow-inner rounded-[5px] pl-4 "
+              type="email"
+              name="email"
+              onChange={(event) => {
+                setUser({ ...user, email: event.target.value });
+              }}
+              required
+            />
+            <div className=" w-full flex flex-col">
+            <label className=" text-textW mt-5 mb-1"> Password </label>
+            <input
+              className="w-full h-[40px] text-textW bg-blue2 border-[1px] outline-0 focus:border-[2px] focus:border-textW shadow-inner rounded-[5px] pl-4 "
+              type="password"
+              name="password"
+              onChange={(event) => {
+                setUser({ ...user, password: event.target.value });
+              }}
+              required
+            />
+            </div>
+            
+
+            <p
+              className=" text-textW text-[13px] mt-[25px] cursor-pointer hover:underline "
+              onClick={() => {
+                navigate("/dts/forgot_password");
+              }}
+            >
+              Forgot your password?
+            </p>
+          
+            {
+              !alert?<button
+              className=" text-textW bg-yellow hover:bg-yellow/80 transition-all  duration-75 cursor-pointer text-[18px] w-full h-[45px] mt-6 rounded-full flex items-center justify-center gap-2 "
+              type="submit"
+              
+            > Login </button>:
+            <button
+            className=" pointer-events-none text-textW bg-yellow hover:bg-yellow/80 transition-all  duration-75 cursor-pointer text-[18px] w-full h-[45px] mt-6 rounded-full flex items-center justify-center gap-2 "
+            type="submit"
+            
+          ><Loader2Icon className=' animate-spin'/> Loading...  </button>
+            }
+            <div className=" mt-5">
+            <AlertBox
+            variant={alert}
+            
+            />
+            </div>
+            
+
+            
+              
+             <hr  className="  border-none pb-10"/>
+
+          
+
+            <div className=" flex w-full min-h-[10px] justify-center items-center">
+              
+              <Link to="/dts/registration" className=" text-sm text-accent">
+                  Don't have an account? <b className=" hover:underline">Create a new one</b> 
+              </Link>
+            </div>
+          </form>
+        </div>
+      </div>
+  );
+}
+
+export default LoginPage;

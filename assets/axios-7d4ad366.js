@@ -1,0 +1,1 @@
+import{a as e}from"./axios-82afda87.js";e.defaults.baseURL="https://dtsserver.pythonanywhere.com/api/v1/";e.defaults.headers.get.Accept="application/json";e.defaults.headers.post["Content-Type"]="application/json";

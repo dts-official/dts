@@ -2,7 +2,7 @@ import bg from "../../../assets/images/DICT-bg.webp";
 import logo from "../../../assets/images/DICT-Banner-Logo.webp";
 import {  useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AlertBox } from "../../../components/alert/Alert";
+// import { AlertBox } from "../../../components/alert/Alert";
 import axios from "../../../plugin/axios";
 import { Loader2Icon } from "lucide-react";
 
@@ -32,8 +32,15 @@ function RegistrationPage() {
     },[user])
 
 
-    //warning
-    const [alert,setAlert]= useState("")
+    // //warning
+    // const [alert,setAlert]= useState({
+    //   variant: "",
+    //   title: "",
+    //   description: ""
+    // })
+
+    //loading 
+    const [isLoading, setIsLoading]=useState(false)
 
 
 
@@ -105,10 +112,6 @@ function RegistrationPage() {
     useEffect(()=>{
       getAllOfficeNameAndID()
     },[])
-
-
-
-    // to be used for mapping in the designation
     
 
     // setting the acc_lvl of user based on the selected position
@@ -116,6 +119,9 @@ function RegistrationPage() {
       const positionLevels:any = {
         'Regional Director': 1,
         'Provincial Officer': 2,
+        'Information Technology Officer I': 3,
+        'Information Technology Officer II': 3,
+        'Information Technology Officer III': 3,
         'Project Development Officer I': 3,
         'Project Development Officer II': 3,
         'Project Development Officer III': 3,
@@ -133,14 +139,14 @@ function RegistrationPage() {
 
   return (
    
-      <div className=" grid grid-cols-6 bg-background h-screen w-screen  flex-row justify-center bg-blue2 overflow-hidden ">
-        <Link to="/dts/developers" className="  z-50 absolute text-white bottom-0  p-10 bg-blue2 px-3 py-2 ">
+      <div className=" grid grid-cols-6 bg-background min-h-screen w-screen  flex-row justify-center bg-blue2 overflow-hidden ">
+        <Link to="/dts/developers" className="  z-50 fixed text-white bottom-0  p-10 bg-blue2 px-3 py-2 ">
           <p className="  text-xs">Developed by: <span className=" font-semibold hover:underline">DTS Team</span> </p>
         </Link>
        
        
         {/* image */}
-        <div className=" flex md:hidden col-span-4 lg:col-span-3">
+        <div className=" flex md:hidden col-span-4 lg:col-span-3 ">
           <img
             className=" object-cover  w-full animate__animated animate__slideInDown"
             src={bg}
@@ -151,27 +157,28 @@ function RegistrationPage() {
        
 
         {/* login form */}
-        <div className=" relative sm:justify-center px-16 lg:col-span-3  col-span-2 md:col-span-6 flex flex-col justify-start items-center h-full w-full   animate__animated animate__slideInUp bg-blue2 mt-20 lg:mt-10 overflow-hidden">
+        <div className=" relative sm:justify-center px-10 lg:col-span-3  col-span-2 md:col-span-6 flex flex-col justify-start items-center h-full w-full  animate__animated animate__slideInUp bg-blue2 mt-20 lg:mt-16 sm:px-10 md:lg:mt-16 sm:mt-2 ">
           
          
-          <form className=" flex flex-col min-h-[200px] w-full max-w-[550px] md:max-w-[550px] mb-20 "
+          <form className=" flex flex-col min-h-[200px] w-full max-w-[550px] md:max-w-[550px]"
             onSubmit={ async (e: any) => {
                 e.preventDefault();
 
-                setAlert("s")
+                setIsLoading(true)
 
                 if (confirmpasswordVal && passwordVal) {
-                  try {
-
-                    axios.post("/users/",user).then((response:any)=>{
-                       console.log(response.data)
-                       Swal.fire({
+                  axios.post("/users/",user)
+                    .then((response:any)=>{
+                      console.log(response.data)
+                      Swal.fire({
                         icon: "success",
-                        title: "Succesfully Registered - Please Check your Email",
-                        showConfirmButton: false,
-                        timer: 1500
+                        title: "Registration Successful!",
+                        text: "A confirmation email has been sent to your registered email address. Please check your inbox and follow the instructions to activate your account.",
+                        showConfirmButton: true,
+                        confirmButtonColor : "green",
+                        timer: 20000
                       });
-                       setUser({ 
+                      setUser({ 
                         email: "", 
                         first_name: "", 
                         last_name: "", 
@@ -181,20 +188,60 @@ function RegistrationPage() {
                         office: "", 
                         acc_lvl: 0    
                       })
-                       setTimeout(()=>{
-                           setAlert("")
-                       },3000)
-                       
-   
-                   }) 
-                   } 
-                   catch (error) {
-                       console.error(error);
-                       setAlert("error");
-                       setTimeout(()=>{
-                           setAlert("");
-                       },3000);
-                   }
+                      setTimeout(()=>{
+                        setIsLoading(false)
+                      },3000)
+                    })
+                    .catch((error:any) => {
+                      console.error(error);
+                      if (error.response.data.email){
+                        Swal.fire({
+                          icon: "error",
+                          title: "Registration Error",
+                          text: `An error occurred: ${error.response.data.email[0]} Please try again!`,
+                          showConfirmButton: true,
+                          confirmButtonColor : "red",
+                          timer: 10000
+                        });
+                        setTimeout(()=>{
+                          setIsLoading(false);
+                        },3000);
+                    }
+                    });
+                    
+                } 
+                else if(!passwordVal && confirmpasswordVal) {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Invalid Password",
+                    text: "Please ensure your password meets the requirements and confirm it by typing again!",
+                    showConfirmButton: true,
+                    confirmButtonColor : "orange",
+                    timer: 10000
+                  });
+                  setIsLoading(false)
+                }
+                else if(passwordVal && !confirmpasswordVal) {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Password Mismatch",
+                    text: "Your password and confirmation password do not match. Please ensure they are the same and try again!",
+                    showConfirmButton: true,
+                    confirmButtonColor : "orange",
+                    timer: 10000
+                  });
+                  setIsLoading(false)
+                }
+                else {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Invalid Password & Password Mismatch",
+                    text: "Please ensure your password meets the requirements and confirm it by typing again!",
+                    showConfirmButton: true,
+                    confirmButtonColor : "orange",
+                    timer: 10000
+                  })
+                  setIsLoading(false)
                 }
 
              
@@ -203,7 +250,7 @@ function RegistrationPage() {
           >
 
             {/* logo */}
-            <div className=" flex flex-col gap-10 mb-5 z-50">
+            <div className=" flex flex-col gap-6 mb-5 ">
 
             
               <img
@@ -219,7 +266,7 @@ function RegistrationPage() {
 
             </div>
 
-            <div className=" flex flex-col h-auto w-full overflow-y-scroll hideScroll z-10">
+            <div className=" flex flex-col h-auto w-full">
 
                 {/* First Name & Last Name */}
                 <div className="flex flex-row w-full gap-4 mb-3">
@@ -275,12 +322,15 @@ function RegistrationPage() {
                         [
                           {id:1,name:"Regional Director"},
                           {id:2,name:"Provincial Officer"},
-                          {id:3,name:"Project Development Officer I"},
-                          {id:4,name:"Project Development Officer II"},
-                          {id:5,name:"Project Development Officer III"},
-                          {id:6,name:"Cyber Security Officer I"},
-                          {id:7,name:"Cyber Security Officer II"},
-                          {id:8,name:"Cyber Security Officer III"},
+                          {id:3,name:"Information Technology Officer I"},
+                          {id:4,name:"Information Technology Officer II"},
+                          {id:5,name:"Information Technology Officer III"},
+                          {id:6,name:"Project Development Officer I"},
+                          {id:7,name:"Project Development Officer II"},
+                          {id:8,name:"Project Development Officer III"},
+                          {id:9,name:"Cyber Security Officer I"},
+                          {id:10,name:"Cyber Security Officer II"},
+                          {id:11,name:"Cyber Security Officer III"},
       
                         ]
                       }
@@ -304,6 +354,7 @@ function RegistrationPage() {
 
                 </div>
 
+                <div className="flex  sm:flex-col flex-row w-full sm-gap-0 gap-3">
                 {/* Password */}
                 <div className=" w-full flex flex-col">
                     <label className=" text-textW mt-3 mb-1"> Password </label>
@@ -320,7 +371,7 @@ function RegistrationPage() {
 
                     {/* warning */}
                     {!passwordVal?
-                    <p className="text-[12px] text-[#ff4400] text-justify mt-2 ">Password must contain at least 8 characters with uppercase, lowercase, and special characters</p>
+                    <p className="text-[12px] text-[#ff4400] text-justify mt-2 ">8-character password with numbers</p>
                     :
                     <p className="text-[12px] text-[#15ff00] text-justify mt-2 ">Valid Password</p>
 
@@ -330,7 +381,7 @@ function RegistrationPage() {
                 </div>
 
                 {/* Confirm Password */}
-                <div className=" w-full flex flex-col bg">
+                <div className=" w-full flex flex-col bg sm:mt-[-16px]">
                     <label className=" text-textW mt-3 mb-1"> Confirm Password </label>
                     <input
                     className="w-full h-[40px] text-textW bg-blue2 border-[1px] outline-0 focus:border-[2px] focus:border-textW shadow-inner rounded-[5px] pl-4 "
@@ -355,19 +406,20 @@ function RegistrationPage() {
                     
 
                 </div>
+                </div>
 
 
 
-                <div className="w-full flex mt-5">
-                    <p className="text-white text-[12px] text-justify">*By registering, you accept that your data are being stored in accordance with our privacy policy.</p>
+                <div className="w-full flex mt-3">
+                    <p className="text-white text-[11px] text-justify">*By registering, you accept that your data are being stored in accordance with our privacy policy.</p>
                 </div>
                 
             
                 {/* Register button */}
                 <div className="flex flex-col w-full">
                     {
-                    !alert?<button
-                    className=" w-full text-textW bg-yellow hover:bg-yellow/80 transition-all  duration-75 cursor-pointer text-[18px]  h-[45px] mt-6 rounded-full flex items-center justify-center gap-2 self-center"
+                    !isLoading?<button
+                    className=" w-full text-textW bg-yellow hover:bg-yellow/80 transition-all  duration-75 cursor-pointer text-[18px]  h-[45px] mt-2 rounded-full flex items-center justify-center gap-2 self-center"
                     type="submit"
                     
                     > Register Account </button>:
@@ -379,7 +431,7 @@ function RegistrationPage() {
                     }
                 </div>
 
-                <hr  className="  border-none pb-10"/>
+                <hr  className="  border-none pb-6"/>
 
           
 
@@ -392,15 +444,21 @@ function RegistrationPage() {
 
                 
 
-                <div className="  flex justify-center items-center bg-white rounded-lg mt-5">
+                {/* <div className="  flex justify-center items-center bg-white rounded-lg mt-5">
                     <AlertBox
-                    variant={alert}     
+                    variant={alert.variant}   
+                    title={alert.title}
+                    description={alert.description}  
                     />
-                </div>
+                </div> */}
                
                 
             </div> 
           </form>
+          
+          {/* space at the bottom for scrolling */}
+          <hr  className="  border-none pb-6"/>
+
         </div>
       </div>
   );

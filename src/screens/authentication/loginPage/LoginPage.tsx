@@ -2,10 +2,11 @@ import bg from "../../../assets/images/DICT-bg.webp";
 import logo from "../../../assets/images/DICT-Banner-Logo.webp";
 import {  useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AlertBox } from "../../../components/alert/Alert";
+// import { AlertBox } from "../../../components/alert/Alert";
 
 import axios from "../../../plugin/axios";
 import { Loader2Icon } from "lucide-react";
+import Swal from 'sweetalert2'
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function LoginPage() {
   },[])
 
   const [user, setUser] = useState({ email: "", password: "" });
-  const [alert,setAlert]= useState("")
+  const [isLoading, setIsLoading]= useState(false)
 
   //get office id and name to be used in the dropdown
   const getAllOfficeNameAndID = () => {
@@ -80,7 +81,7 @@ function LoginPage() {
             onSubmit={ async (e: any) => {
               e.preventDefault();
 
-              setAlert("s")
+              setIsLoading(true)
 
               try {
 
@@ -93,32 +94,48 @@ function LoginPage() {
                     }, 
                   }).then((response:any)=>{
                     console.log("response data: ",response.data);
-                    setAlert("success")
-                    localStorage.setItem("user",JSON.stringify(response.data))
-                    setTimeout(()=>{
-                      // Check if the user is a superuser
-                      if (response.data.acc_lvl == 0) {
-                        navigate("/dts/admin")
-                      } else {
-                        // Navigate to the page for normal users
-                        navigate("/dts/home")
+                    Swal.fire({
+                      icon: "success",
+                      title: "Login Successful!",
+                      showConfirmButton: true,
+                      confirmButtonColor : "green",
+                      timer: 5000
+                    }).then((e:any)=>{
+                      setIsLoading(false)
+                      if(e.isConfirmed || e.dismiss === Swal.DismissReason.timer){
+                        localStorage.setItem("user",JSON.stringify(response.data))
+                          // Check if the user is a superuser
+                          if (response.data.acc_lvl == 0) {
+                            navigate("/dts/admin")
+                          } else {
+                            // Navigate to the page for normal users
+                            navigate("/dts/home")
+                          }
+                          
                       }
-                      setAlert("")
-                    },1000)
+                    })
+
                   })
 
-                }).catch(()=>{
-                  setAlert("error")
-                  setTimeout(()=>{
-                    setAlert("")
-                  },3000)
+                }).catch((error:any)=>{
+                  console.error(error);
+                  if (error.response.data.non_field_errors){
+                    Swal.fire({
+                      icon: "error",
+                      title: "Login Error",
+                      text: `${error.response.data.non_field_errors[0]} Please try again!`,
+                      showConfirmButton: true,
+                      confirmButtonColor : "red",
+                      timer: 10000
+                    });
+                    setTimeout(()=>{
+                      setIsLoading(false);
+                    },3000);
+                }
                 })
                 
               } catch (error) {
-                setAlert("error")
-                setTimeout(()=>{
-                  setAlert("")
-                },3000)
+                console.log("Try Catch: ", error)
               }
 
 
@@ -193,7 +210,7 @@ function LoginPage() {
             </p>
           
             {
-              !alert?<button
+              !isLoading?<button
               className=" text-textW bg-yellow hover:bg-yellow/80 transition-all  duration-75 cursor-pointer text-[18px] w-full h-[45px] mt-6 rounded-full flex items-center justify-center gap-2 "
               type="submit"
               
@@ -204,13 +221,13 @@ function LoginPage() {
             
           ><Loader2Icon className=' animate-spin'/> Loading...  </button>
             }
-            <div className=" mt-5">
-            <AlertBox
-            variant={alert}
-            
-            />
+            {/* <div className=" mt-5">
+              <AlertBox
+              variant={alert}
+              
+              />
             </div>
-            
+             */}
 
             
               

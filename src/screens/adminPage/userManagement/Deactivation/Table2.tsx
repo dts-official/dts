@@ -148,7 +148,7 @@ function MyTable({search, data, getAllDeactivatedUsers}:any) {
                   }).then((clicked:any)=>{
                     if(clicked.isConfirmed){
                       let userId = row.original.id;
-                      axios.get('users/' + userId + '/', {
+                      axios.get('users/user/' + userId + '/', {
                           headers: {
                             Authorization: `Token ${localStorage.getItem('keys')}`
                           }

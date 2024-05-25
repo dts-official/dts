@@ -22,15 +22,35 @@ const UpdateUser = () => {
         email: selectedUser.email,
         position: selectedUser.position,
         office: selectedUser.office,
+        acc_lvl : selectedUser.acc_lvl,
         password: "",
     })
 
     const offices = JSON.parse(localStorage.getItem("offices")||"").find((office: any) => office.id === userData.office);
 
+    useEffect(() => {
+        const positionLevels:any = {
+          'Regional Director': 1,
+          'Provincial Officer': 2,
+          'Information Technology Officer I': 3,
+          'Information Technology Officer II': 3,
+          'Information Technology Officer III': 3,
+          'Project Development Officer I': 3,
+          'Project Development Officer II': 3,
+          'Project Development Officer III': 3,
+          'Cyber Security Officer I': 3,
+          'Cyber Security Officer II': 3,
+          'Cyber Security Officer III': 3,
+        };
+  
+        if (positionLevels[userData.position]) {
+            setUserData({...userData, acc_lvl: positionLevels[userData.position]});
+        }
+      }, [userData.position]);
 
     useEffect(()=>{
         console.table(userData)
-        console.log(offices)
+    
     },[userData])
 
 
@@ -93,6 +113,7 @@ const UpdateUser = () => {
                                 position: "",
                                 office: "",
                                 password: "",
+                                acc_lvl:""
                             });  
                             
                             navigate('/dts/admin/user/')                        

@@ -17,7 +17,8 @@ function Dropdown({setActive,navActive}:any) {
   }
 ]
   return (
-    <div className="relative inline-block text-left">
+    // added hidden display when screen is slg
+    <div className="relative inline-block text-left slg:hidden">
       <div>
         <button type="button" onClick={() => setActive(!navActive)} className={navActive?" transition-all duration-150 inline-flex justify-center w-full  rounded-md  px-4 py-2 border border-border text-sm font-medium text-gray-700 bg-gray-50 focus:outline-none   items-center gap-2": " transition-all duration-150 inline-flex justify-center w-full  rounded-md  px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none   items-center gap-2"}>
         <div className="bg-blue flex items-center justify-center h-5 p-5 w-5 rounded-full  ">

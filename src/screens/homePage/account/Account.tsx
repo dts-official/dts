@@ -34,7 +34,7 @@ const Account = () => {
 const officeName = getOfficeName(JSON.parse( localStorage.getItem("user")|| "").office  , JSON.parse( localStorage.getItem("offices")|| "")   );
 
   return (
-    <div className=" relative  rounded-[5px] h-screen w-full pb-36 sm:pb-60 sm:pt-60  overflow-y-scroll flex items-center justify-center gap-5    ">
+    <div className=" relative  rounded-[5px] h-screen w-full pb-36 sm:pb-60 overflow-y-scroll flex items-center md:items-start justify-center gap-5    ">
     
       <div className=' relative w-full px-[100px] md:px-10 md:flex-col flex gap-4'>
 
@@ -86,7 +86,7 @@ const officeName = getOfficeName(JSON.parse( localStorage.getItem("user")|| "").
        <div className=" w-[60%] md:w-full ">
        <div className=" flex flex-col gap-2 ">
        <p className=" font-semibold text-sm">User Information</p>
-       <div className="  grid grid-cols-3 sm:grid-cols-2 relative gap-5 ">
+       <div className="  grid grid-cols-3 slg:grid-cols-2 sm:grid-cols-1 relative gap-5 ">
        
        
         <div className=" row-span-1   col-span-1 flex flex-col  shadow-md px-4  py-2 rounded-md ">

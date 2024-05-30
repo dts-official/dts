@@ -7,10 +7,11 @@ import {
 } from "@/components/ui/alert"
 export function AlertBox({variant,title,description}:any) {
 
+    //removed animate-pulse in className
     switch (variant) {
         case "error":
             return (
-                <Alert variant="destructive" className=" flex flex-row gap-2 items-start animate-pulse">
+                <Alert variant="destructive" className=" flex flex-row gap-2 items-start">
                     <span className="material-symbols-outlined">
                      error
                     </span>
@@ -25,7 +26,7 @@ export function AlertBox({variant,title,description}:any) {
             )
         case "success":
             return (
-                <Alert  className=" flex flex-row gap-2 items-start animate-pulse bg-transparent border-green-600 border">
+                <Alert  className=" flex flex-row gap-2 items-start bg-transparent border-green-600 border">
                     <span className="material-symbols-outlined text-green-600">
                     task_alt
                     </span>
@@ -40,7 +41,7 @@ export function AlertBox({variant,title,description}:any) {
             )
         case "warning":
             return (
-                <Alert  className=" flex flex-row gap-2 items-start animate-pulse bg-transparent border-yellow border">
+                <Alert  className=" flex flex-row gap-2 items-start bg-transparent border-yellow border">
                     <span className="material-symbols-outlined text-yellow">
                     warning
                     </span>

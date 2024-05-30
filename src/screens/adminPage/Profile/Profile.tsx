@@ -8,22 +8,11 @@ import { PencilLine } from "lucide-react";
 
 function Profile() {
 
-
-    const genInfo = [
-        { "entry" : "Surname", "applicable" : "Not applicable" },
-        { "entry" : "First Name", "applicable" : "Not applicable" },
-        { "entry" : "Middle Name", "applicable" : "Not applicable" },
-        { "entry" : "Position", "applicable" : "Not applicable" },
-        { "entry" : "Office", "applicable" : "Not applicable" },
-        { "entry" : "City", "applicable" : "Not applicable" },
-        { "entry" : "Province", "applicable" : "Not applicable" },
-        { "entry" : "Region", "applicable" : "Not applicable" },
-        { "entry" : "Citizenship", "applicable" : "Not applicable" },
-        { "entry" : "Sex", "applicable" : "Not applicable" },
-        { "entry" : "Civil Status", "applicable" : "Not applicable" },
-        { "entry" : "Birthdate", "applicable" : "Not applicable" },
-        { "entry" : "Cellphone No.", "applicable" : "Not applicable" },
-    ]
+    function getOfficeName(officeId:any, offices:any) {
+        const office = offices.find((o:any)=> o.officeID === officeId);
+        return office ? office.name : 'Office not found';
+    }
+    const officeName = getOfficeName(JSON.parse( localStorage.getItem("user")|| "").office  , JSON.parse( localStorage.getItem("offices")|| "")   );
 
 
   return (
@@ -51,7 +40,7 @@ function Profile() {
 
                         <div className=" z-10 flex flex-col  lg:justify-center lg:items-center  md:w-[100%] w-[40%] h-[90px] lg:min-w-[300px] lg:w-[100%] lg:h-[80px] bg-white rounded-xl p-4 lg:pl-0 pl-10 translate-x-[-30px] sm:translate-y-[-20px] md:translate-y-[-10px] lg:translate-y-[-20px] lg:translate-x-[0px] ">
                             <p className=" text-[#2B3674] text-[20px] font-semibold truncate">Administrator</p>
-                            <p className=" text-[#A3AED0] text-[16px] truncate">admin.dts@dict.gov.ph</p>
+                            <p className=" text-[#A3AED0] text-[16px] truncate">{JSON.parse(localStorage.getItem("user") || "").email}</p>
                         </div>
 
                         {/* admin password */}
@@ -76,14 +65,31 @@ function Profile() {
                     {/* container */}
                     <div className=" grid lg:grid-col-span-6 grid-cols-4 w-full h-full gap-4">
 
-                        {genInfo.map((e) => {
-                            return (
-                                <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
-                                    <p className="text-[#A3AED0] text-[14px]  mb-2">{e.entry}</p>
-                                    <p className="text-[#2B3674] text-[13px] ">{e.applicable}</p>
-                                </div>
-                            );
-                        })}
+
+                        <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
+                            <p className="text-[#A3AED0] text-[14px]  mb-2">First Name</p>
+                            <p className="text-[#2B3674] text-[13px] ">{JSON.parse( localStorage.getItem("user")|| "").first_name}</p>
+                        </div>
+
+                        <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
+                            <p className="text-[#A3AED0] text-[14px]  mb-2">Last Name</p>
+                            <p className="text-[#2B3674] text-[13px] ">{JSON.parse( localStorage.getItem("user")|| "").last_name}</p>
+                        </div>
+
+                        <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
+                            <p className="text-[#A3AED0] text-[14px]  mb-2">Email</p>
+                            <p className="text-[#2B3674] text-[13px] ">{JSON.parse( localStorage.getItem("user")|| "").email}</p>
+                        </div>
+
+                        <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
+                            <p className="text-[#A3AED0] text-[14px]  mb-2">Position</p>
+                            <p className="text-[#2B3674] text-[13px] ">{JSON.parse( localStorage.getItem("user")|| "").position}</p>
+                        </div>
+
+                        <div className="lg:col-span-2 col-span-1 flex flex-col justify-center h-[70px] w-full pl-4 mt-3 mr-2 bg-white rounded-xl">
+                            <p className="text-[#A3AED0] text-[14px]  mb-2">Office Designation</p>
+                            <p className="text-[#2B3674] text-[13px] ">{officeName}</p>
+                        </div>
 
                     </div>
 

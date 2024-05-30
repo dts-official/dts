@@ -82,7 +82,7 @@ function AuditTable({ search, data }: any) {
 
 
   return (
-    <div className=' flex flex-col h-full w-full justify-between'>
+    <div className=' flex flex-col h-full w-full justify-between '>
 
       <div className='overflow-hidden'>
         <table {...getTableProps()} className='w-full text-xs font-light table-fixed'>

@@ -34,8 +34,8 @@ import {
                   <SelectValue placeholder="Select Office..." />
               </SelectTrigger>
               <SelectContent >
-                {options.map((e:any)=>(
-                  <SelectItem value={e.name}>{e.name}</SelectItem>
+                {options.map((e:any,key:any)=>(
+                  <SelectItem key={key} value={e.name}>{e.name}</SelectItem>
                 ))}
               </SelectContent>
               </Select>

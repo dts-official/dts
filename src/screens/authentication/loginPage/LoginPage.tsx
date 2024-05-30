@@ -11,8 +11,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    localStorage.getItem('user')==null?localStorage.setItem('user',
-    '{"first_name":"Angel","last_name":"Naval","position":"Officer 202","designation":"gwapo","id":26,"email":"markgilrusiana437@gmail.com"}'):""
+    localStorage.getItem('keys')==null?" ": navigate('dts/home')
 
     localStorage.setItem("nav", "0")
   },[])
@@ -21,37 +20,7 @@ function LoginPage() {
   const [alert,setAlert]= useState("")
 
   //get office id and name to be used in the dropdown
-  const getAllOfficeNameAndID = () => {
-    axios.get('/office/all/get')
-    .then(response => {
-        const officeDataArray = response.data;
-        const dataToStore = officeDataArray.map((e:any) => ({
-            id: e.officeID,
-            name: e.name
-        }));
-        localStorage.setItem('officeData', JSON.stringify(dataToStore));
-    })
-    .catch(error => {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-      } else if (error.request) {
-          // The request was made but no response was received
-          console.error(error.request);
-      } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error', error.message);
-      }
-      console.error(error.config);
-      });
-  }
-
-  useEffect(()=>{
-    getAllOfficeNameAndID()
-  },[])
+  
 
   return (
    
@@ -92,7 +61,7 @@ function LoginPage() {
                       Authorization: `Token ${response.data.auth_token}`,
                     }, 
                   }).then((response:any)=>{
-                    console.log("response data: ",response.data);
+                   
                     setAlert("success")
                     localStorage.setItem("user",JSON.stringify(response.data))
                     setTimeout(()=>{

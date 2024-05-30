@@ -26,12 +26,6 @@ function RegistrationPage() {
     });
 
 
-    useEffect(()=>{
-      console.table(user)
-      console.table(offices)
-    },[user])
-
-
     //warning
     const [alert,setAlert]= useState("")
 

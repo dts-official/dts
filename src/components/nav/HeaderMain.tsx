@@ -61,8 +61,9 @@ const Header = ({ navActive, setActive }: any) => {
   }
 
   useEffect(() => {
+    localStorage.getItem('keys')==null?navigate('dts/login'):""
     getOffices();
-    let intervalId = setInterval(getNotifs, 2000);
+    let intervalId = setInterval(getNotifs, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -74,7 +75,6 @@ const Header = ({ navActive, setActive }: any) => {
   useEffect(() => {
     const currentPath: any = location.pathname.split("/").pop();
     setActivePage(currentPath);
-    console.log(currentPath);
   }, [location]);
 
   return (
@@ -208,7 +208,7 @@ const Header = ({ navActive, setActive }: any) => {
                         >
                           {e.document ? "Documents" : "Gatepass"}
                         </h1>
-                        <p className=" text-xs font-semibold ">{e.by}</p>
+                        <p className=" w-full text-xs font-semibold truncate ">{e.by}</p>
                         <p className=" text-xs ">{JSON.parse(e.message)[0]}</p>
                       </div>
                     </div>

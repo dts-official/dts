@@ -43,7 +43,6 @@ function Letter() {
 
     const handleSubmit = (e:any) =>{
         e.preventDefault()
-        console.log(data)
         
 
         if (validateData(data)) {
@@ -53,8 +52,7 @@ function Letter() {
             headers: {
               Authorization: `Token ${localStorage.getItem("keys")}`,
             }, 
-          }).then((e:any)=>{
-            console.log(e.data)
+          }).then((_e:any)=>{
             Swal.fire({
               icon: "success",
               title: "Succesfully Created",

@@ -46,8 +46,8 @@ function Form() {
   return (
     <>
     
-    <div className=" relative    min-h-full w-full sm:pb-20 sm:pt-0  flex items-start justify-center gap-5  mt-5 overflow-y-scroll pb-24  ">
-        <div className=" relative rounded-md animate__animated animate__fadeInUp w-[80%] sm:w-full sm:mx-5 max-w-[1366px] sm:px-2 px-10 border-dashed border border-blue/50 bg-white min-h-[200px] pb-5">
+    <div className=" relative  rounded-[5px] h-screen w-full pb-40 sm:pb-20 sm:pt-0  overflow-y-scroll flex items-start justify-center gap-5   ">
+        <div className=" rounded-md relative animate__animated animate__fadeInUp mt-5 mb-20  w-[80%] sm:w-full sm:mx-5 max-w-[1366px] sm:px-2 px-10 border-dashed border border-blue/50 bg-white min-h-[200px] pb-5">
             <div className=" w-full flex items-center justify-between py-4 ">
                 <div className=" flex flex-col leading-2">
                     <h1 className=" font-semibold text-base sm:text-xs">{"Received File Details"}</h1>

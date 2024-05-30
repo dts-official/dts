@@ -17,8 +17,6 @@ const DropdownReceive = ({className,label,disabled,options,data,setData}:any) =>
     const selected = options.find((e:any) => e.name === value);
     if (selected) {
       setData({...data, to: selected.officeID});
-      
-      console.log(selected)
    }
   };
 

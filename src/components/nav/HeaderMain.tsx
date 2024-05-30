@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "./../../assets/images/DICT-Banner-Logo.webp";
 import DTS from "./../../assets/logo/DTS_logo.png";
 import NotifIcon from "./../../assets/icons/notificationBlue.png";
-import Notif2Icon from "./../../assets/icons/notif.png";
+import accounts from "./../../assets/icons/profile.png";
+import audits from "./../../assets/icons/audit.png";
+
 
 import OutIcon from "./../../assets/icons/out.png";
 import { useEffect, useState } from "react";
@@ -61,9 +63,8 @@ const Header = ({ navActive, setActive }: any) => {
   }
 
   useEffect(() => {
-    localStorage.getItem('keys')==null?navigate('dts/login'):""
     getOffices();
-    let intervalId = setInterval(getNotifs, 5000);
+    let intervalId = setInterval(getNotifs, 2000);
     return () => {
       clearInterval(intervalId);
     };
@@ -75,6 +76,7 @@ const Header = ({ navActive, setActive }: any) => {
   useEffect(() => {
     const currentPath: any = location.pathname.split("/").pop();
     setActivePage(currentPath);
+    console.log(currentPath);
   }, [location]);
 
   return (
@@ -93,7 +95,7 @@ const Header = ({ navActive, setActive }: any) => {
             alt="Vite logo"
           />
         </Link>
-        <nav className=" relative lg:hidden mr-10  h-full  text-accent-foreground flex gap-20 uppercase items-center">
+        <nav className=" relative  mr-10  h-full  text-accent-foreground flex gap-20 uppercase items-center slg:mr-24 sm:mr-12">
           <div className="hover:cursor-pointer relative group  font-fbold h-full flex items-center justify-center  text-xs transition-all  duration-75">
             {" "}
             {/* Dropdown Container */}
@@ -103,7 +105,7 @@ const Header = ({ navActive, setActive }: any) => {
                   className={
                     Notif
                       ? " absolute right-0 h-[10px] text-accent flex items-center justify-center w-[10px] rounded-full bg-red-600 text-[9px] p-1 top-0"
-                      : " hidden"
+                      : ""
                   }
                 ></div>
                 <img
@@ -112,9 +114,11 @@ const Header = ({ navActive, setActive }: any) => {
                   src={NotifIcon}
                 />
               </div>
-              Notifications
+              <p className=" text-center slg:hidden">Notifications</p>
             </div>
-            <div className="hidden w-[300px]  z-20 group-hover:flex flex-col absolute top-full right-0 bg-accent text-accent-foreground border rounded-sm overflow-hidden shadow-lg">
+
+            {/* when screen is slg, hover on notif is hidden when the nav is currently active */}
+            <div className={`hidden w-[300px]  z-20 ${navActive ? "slg:group-hover:hidden" : "slg:group-hover:flex"} group-hover:flex : flex-col absolute top-full right-0 bg-accent text-accent-foreground border rounded-sm overflow-hidden shadow-lg`}>
               <div className=" font-fmedium capitalize px-3 py-2  tracking-wider bg-background  text-start text-lg font-bold">
                 Notifications
               </div>
@@ -208,7 +212,7 @@ const Header = ({ navActive, setActive }: any) => {
                         >
                           {e.document ? "Documents" : "Gatepass"}
                         </h1>
-                        <p className=" w-full text-xs font-semibold truncate ">{e.by}</p>
+                        <p className=" text-xs font-semibold ">{e.by}</p>
                         <p className=" text-xs ">{JSON.parse(e.message)[0]}</p>
                       </div>
                     </div>
@@ -237,7 +241,9 @@ Refresh
             Log Out
           </Link> */}
         </nav>
-        <div className=" right-0 top-0 absolute mr-10 sm:mr-4 lg:flex flex-col hidden items-end  justify-end mt-5 pointer-events-none ">
+
+        {/* will show 3 bars when screen is slg */}
+        <div className=" right-0 top-0 absolute mr-10 sm:mr-4 slg:flex flex-col hidden items-end  justify-end mt-[16px] sm:mt-[22px] pointer-events-none ">
           {!navActive ? (
             <MenuIcon
               onClick={() => {
@@ -278,14 +284,25 @@ Refresh
             </Link>
             <Link
               className=" flex items-center gap-2 hover:font-semibold text-xs transition-all duration-75 text-white h-14 w-full pl-10  hover:bg-yellow"
-              to=""
+              to="/dts/home/account"
             >
               <img
                 className=" h-5 object-contain"
-                alt="NotifIcon"
-                src={Notif2Icon}
+                alt="Accounts"
+                src={accounts}
               />
-              Notifications
+              <p className="mt-1">Account</p>
+            </Link>
+            <Link
+              className=" flex items-center gap-2 hover:font-semibold text-xs transition-all duration-75 text-white h-14 w-full pl-10  hover:bg-yellow"
+              to="/dts/home/audit_trail"
+            >
+              <img
+                className=" h-5 object-contain"
+                alt="Audits"
+                src={audits}
+              />
+              <p className="mt-0">Audit Logs</p>
             </Link>
             <Link
               to="/dts/"
@@ -299,7 +316,7 @@ Refresh
                 alt="OutIcon"
                 src={OutIcon}
               />
-              Log Out
+              <p className="mt-1">Log Out</p>
             </Link>
           </nav>
         </div>

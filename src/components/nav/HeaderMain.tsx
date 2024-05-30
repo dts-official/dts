@@ -63,6 +63,7 @@ const Header = ({ navActive, setActive }: any) => {
   }
 
   useEffect(() => {
+    localStorage.getItem('keys')==null?('/dts/login/'): ""
     getOffices();
     let intervalId = setInterval(getNotifs, 2000);
     return () => {

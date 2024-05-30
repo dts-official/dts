@@ -12,7 +12,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    localStorage.getItem('keys')==null?" ": navigate('dts/home')
+    localStorage.getItem('keys')==null?" ": navigate('/dts/home')
 
     localStorage.setItem("nav", "0")
   },[])
